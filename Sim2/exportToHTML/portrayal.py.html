@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>portrayal.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+portrayal.py</font>
+</center></td></tr></table>
+<pre><span class="s0">def </span><span class="s1">portrayCell(cell):</span>
+    <span class="s2">''' 
+    This function is registered with the visualization server to be called 
+    each tick to indicate how to draw the cell in its current state. 
+    :param cell:  the cell in the simulation 
+    :return: the portrayal dictionary. 
+    '''</span>
+    <span class="s0">assert </span><span class="s1">cell </span><span class="s0">is not None</span>
+    <span class="s0">return </span><span class="s1">{</span>
+        <span class="s3">&quot;Shape&quot;</span><span class="s1">: </span><span class="s3">&quot;rect&quot;</span><span class="s0">,</span>
+        <span class="s3">&quot;w&quot;</span><span class="s1">: </span><span class="s4">1</span><span class="s0">,</span>
+        <span class="s3">&quot;h&quot;</span><span class="s1">: </span><span class="s4">1</span><span class="s0">,</span>
+        <span class="s3">&quot;Filled&quot;</span><span class="s1">: </span><span class="s3">&quot;true&quot;</span><span class="s0">,</span>
+        <span class="s3">&quot;Layer&quot;</span><span class="s1">: </span><span class="s4">0</span><span class="s0">,</span>
+        <span class="s3">&quot;x&quot;</span><span class="s1">: cell.x</span><span class="s0">,</span>
+        <span class="s3">&quot;y&quot;</span><span class="s1">: cell.y</span><span class="s0">,</span>
+        <span class="s3">&quot;Color&quot;</span><span class="s1">: </span><span class="s3">&quot;black&quot; </span><span class="s0">if </span><span class="s1">cell.isAlive </span><span class="s0">else </span><span class="s3">&quot;white&quot;</span>
+    <span class="s1">}</span></pre>
+</body>
+</html>

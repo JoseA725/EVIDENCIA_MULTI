@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>run.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+run.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">model </span><span class="s0">import </span><span class="s1">BoxModel</span>
+<span class="s0">import </span><span class="s1">matplotlib.pyplot </span><span class="s0">as </span><span class="s1">plt</span>
+<span class="s0">import </span><span class="s1">numpy </span><span class="s0">as </span><span class="s1">np</span>
+
+<span class="s1">model = BoxModel(</span><span class="s2">1</span><span class="s0">, </span><span class="s2">10</span><span class="s0">, </span><span class="s2">10</span><span class="s0">, </span><span class="s2">1</span><span class="s1">)</span>
+<span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">20</span><span class="s1">):</span>
+    <span class="s1">model.step()</span>
+    <span class="s1">print(</span><span class="s3">&quot;taking step&quot;</span><span class="s1">)</span>
+
+<span class="s1">agent_counts = np.zeros((model.grid.width</span><span class="s0">, </span><span class="s1">model.grid.height))</span>
+<span class="s0">for </span><span class="s1">cell </span><span class="s0">in </span><span class="s1">model.grid.coord_iter():</span>
+    <span class="s1">cell_content</span><span class="s0">, </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y = cell</span>
+    <span class="s1">agent_count = len(cell_content)</span>
+    <span class="s1">agent_counts[x][y] = agent_count</span>
+<span class="s1">plt.imshow(agent_counts</span><span class="s0">, </span><span class="s1">interpolation=</span><span class="s3">&quot;nearest&quot;</span><span class="s1">)</span>
+<span class="s1">plt.show()</span></pre>
+</body>
+</html>

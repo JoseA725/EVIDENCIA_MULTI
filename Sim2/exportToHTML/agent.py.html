@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>agent.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+agent.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">mesa</span>
+<span class="s0">import </span><span class="s1">math</span>
+<span class="s0">from </span><span class="s1">stack </span><span class="s0">import </span><span class="s1">StackAgent</span>
+
+
+<span class="s0">class </span><span class="s1">RobotAgent(mesa.Agent):</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">, </span><span class="s1">unique_id</span><span class="s0">, </span><span class="s1">model):</span>
+        <span class="s1">super().__init__(unique_id</span><span class="s0">, </span><span class="s1">model)</span>
+        <span class="s1">self.carrying = </span><span class="s2">0</span>
+        <span class="s1">self.stackCount = </span><span class="s2">0</span>
+        <span class="s1">self.tempClosest = </span><span class="s2">100</span>
+        <span class="s1">self.point = </span><span class="s2">0</span><span class="s0">,</span><span class="s2">0</span>
+        <span class="s1">self.movingToX = </span><span class="s2">0</span>
+        <span class="s1">self.movingToY = </span><span class="s2">0</span>
+        <span class="s1">self.new_pos = (</span><span class="s2">0</span><span class="s0">,</span><span class="s2">0</span><span class="s1">)</span>
+        <span class="s1">self.foundBox = </span><span class="s0">False</span>
+        <span class="s1">self.gridmate = </span><span class="s2">1</span>
+        <span class="s1">self.destroy = </span><span class="s2">0</span>
+        <span class="s1">self.stacks = </span><span class="s2">0</span>
+
+    <span class="s0">def </span><span class="s1">pickUp(self):</span>
+        <span class="s1">gridmate = self.model.grid.get_cell_list_contents([self.pos])</span>
+        <span class="s1">print(len(gridmate)</span><span class="s0">, </span><span class="s3">&quot;GRRINDMATES&quot; </span><span class="s1">)</span>
+        <span class="s0">if </span><span class="s1">len(gridmate) &gt; </span><span class="s2">1</span><span class="s1">:</span>
+            <span class="s1">self.model.grid.remove_agent(gridmate[</span><span class="s2">0</span><span class="s1">])</span>
+
+    <span class="s0">def </span><span class="s1">step(self):</span>
+        <span class="s1">self.destroy = </span><span class="s2">0</span>
+
+        <span class="s1">j = len(self.model.boxCoords)</span>
+        <span class="s1">temp = </span><span class="s2">0</span>
+
+        <span class="s1">print(</span><span class="s3">&quot;PosX: &quot;</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">0</span><span class="s1">])</span>
+        <span class="s1">print(</span><span class="s3">&quot;PosY: &quot;</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">])</span>
+        <span class="s1">print(</span><span class="s3">&quot;J: &quot;</span><span class="s0">, </span><span class="s1">j)</span>
+        <span class="s0">if</span><span class="s1">(j == </span><span class="s2">0 </span><span class="s0">and </span><span class="s1">(self.pos[</span><span class="s2">0</span><span class="s1">] == </span><span class="s2">0 </span><span class="s0">and </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">] == </span><span class="s2">0</span><span class="s1">)):</span>
+            <span class="s1">self.stay()</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s0">if </span><span class="s1">(self.carrying == </span><span class="s2">0</span><span class="s1">):</span>
+                <span class="s0">if</span><span class="s1">(self.foundBox == </span><span class="s0">False and </span><span class="s1">j &gt; </span><span class="s2">0</span><span class="s1">):</span>
+                    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(j):</span>
+                        <span class="s1">print(self.model.boxCoords)</span>
+                        <span class="s0">if</span><span class="s1">((math.dist(self.pos</span><span class="s0">, </span><span class="s1">self.model.boxCoords[i])) &lt; self.tempClosest):</span>
+                            <span class="s4">#print(&quot;TEM&quot;)</span>
+                            <span class="s4">#print(self.tempClosest)</span>
+                            <span class="s1">self.tempClosest = math.dist(self.pos</span><span class="s0">, </span><span class="s1">self.model.boxCoords[i])</span>
+
+                            <span class="s1">self.point = self.model.boxCoords[i]</span>
+                            <span class="s1">temp = i</span>
+                            <span class="s1">self.movingToX = self.point[</span><span class="s2">0</span><span class="s1">]</span>
+                            <span class="s1">self.movingToY = self.point[</span><span class="s2">1</span><span class="s1">]</span>
+            
+                    <span class="s1">self.foundBox = </span><span class="s0">True</span>
+                    <span class="s1">print(</span><span class="s3">&quot;Temp: &quot;</span><span class="s0">,</span><span class="s1">temp)</span>
+                    <span class="s1">print(</span><span class="s3">&quot;X: &quot;</span><span class="s0">, </span><span class="s1">self.movingToX)</span>
+                    <span class="s1">print(</span><span class="s3">&quot;Y: &quot;</span><span class="s0">, </span><span class="s1">self.movingToY)</span>
+                    <span class="s1">self.model.boxCoords.pop(temp)</span>
+
+            <span class="s0">if </span><span class="s1">(self.pos == (self.movingToX</span><span class="s0">, </span><span class="s1">self.movingToY)):</span>
+                <span class="s1">print()</span>
+                <span class="s1">self.pickUp()</span>
+                <span class="s1">self.tempClosest = </span><span class="s2">100</span>
+
+            <span class="s0">if</span><span class="s1">(self.pos == (</span><span class="s2">0</span><span class="s0">,</span><span class="s2">0</span><span class="s1">) </span><span class="s0">and </span><span class="s1">self.foundBox == </span><span class="s0">True</span><span class="s1">):</span>
+                <span class="s1">self.dropOff()</span>
+                <span class="s1">self.foundBox =</span><span class="s0">False</span>
+                <span class="s1">print(</span><span class="s3">&quot;dop&quot;</span><span class="s1">)</span>
+
+    
+            <span class="s1">self.move()</span>
+        
+        
+
+    <span class="s0">def </span><span class="s1">move(self):</span>
+        <span class="s4">#move until you find a box</span>
+        <span class="s1">new_pos = </span><span class="s2">0</span>
+        <span class="s0">if</span><span class="s1">(self.carrying == </span><span class="s2">0</span><span class="s1">):</span>
+            <span class="s1">print(self.pos[</span><span class="s2">0</span><span class="s1">])</span>
+            <span class="s1">print(self.pos[</span><span class="s2">1</span><span class="s1">])</span>
+            <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">0</span><span class="s1">] != self.movingToX):</span>
+                
+                <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">0</span><span class="s1">] &lt;= self.movingToX):</span>
+                    <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">] + </span><span class="s2">1</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">])</span>
+
+                <span class="s0">else</span><span class="s1">:</span>
+
+                    <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">] - </span><span class="s2">1</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">])</span>
+
+            <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">1</span><span class="s1">] != self.movingToY):</span>
+
+                <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">1</span><span class="s1">] &lt;= self.movingToY):</span>
+
+                    <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">]</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">] + </span><span class="s2">1</span><span class="s1">)</span>
+
+                <span class="s0">else</span><span class="s1">:</span>
+
+                    <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">]</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">] + -</span><span class="s2">1</span><span class="s1">)</span>
+
+            <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">0</span><span class="s1">] == self.movingToX </span><span class="s0">and </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">] == self.movingToY):</span>
+                <span class="s1">self.carrying = </span><span class="s2">1</span>
+
+
+        <span class="s4">#carry the box back to the stack</span>
+        <span class="s0">if</span><span class="s1">(self.carrying == </span><span class="s2">1</span><span class="s1">):</span>
+
+            <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">0</span><span class="s1">] != </span><span class="s2">0</span><span class="s1">):</span>
+
+                <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">] - </span><span class="s2">1</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">])</span>
+
+            <span class="s0">else</span><span class="s1">:</span>
+
+                <span class="s0">if</span><span class="s1">(self.pos[</span><span class="s2">1</span><span class="s1">] &gt; self.stacks):</span>
+
+                    <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">]</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">] - </span><span class="s2">1</span><span class="s1">)</span>
+
+                <span class="s0">elif</span><span class="s1">(self.pos[</span><span class="s2">1</span><span class="s1">] &lt; self.stacks):</span>
+
+                    <span class="s1">new_pos = (self.pos[</span><span class="s2">0</span><span class="s1">]</span><span class="s0">, </span><span class="s1">self.pos[</span><span class="s2">1</span><span class="s1">] + </span><span class="s2">1</span><span class="s1">)</span>
+
+        <span class="s1">self.model.grid.move_agent(self</span><span class="s0">,</span><span class="s1">new_pos)</span>
+
+    <span class="s0">def </span><span class="s1">dropOff(self):</span>
+        <span class="s1">self.carrying = </span><span class="s2">0</span>
+        <span class="s1">self.stacks += </span><span class="s2">1</span>
+
+    <span class="s0">def </span><span class="s1">stay(self):</span>
+        <span class="s1">print(</span><span class="s3">&quot;Staying&quot;</span><span class="s1">)</span>
+</pre>
+</body>
+</html>
