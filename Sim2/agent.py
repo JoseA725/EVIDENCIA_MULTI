@@ -118,7 +118,7 @@ class RobotAgent(mesa.Agent):
     # The robot stays were he is
     def stay(self):
         if self.staying != True:
-            print(self.moves)
+            print("moves: ", self.moves)
             self.staying = True
         else:
             self.staying = True
