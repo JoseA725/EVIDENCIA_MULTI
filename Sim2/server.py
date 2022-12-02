@@ -1,17 +1,17 @@
 from model import *
-from mesa.visualization.modules import CanvasGrid
 from mesa.visualization.ModularVisualization import ModularServer
-from mesa.visualization.UserParam import UserSettableParameter
 import mesa
 
-
+# Function defined in order to represent visually de simulation
 def agent_portrayal(agent):
     portrayal = {"Filled": "true"}
+    # gives the shapes and colors to the robot agents
     if agent.unique_id < 5:
         portrayal["Shape"] = "circle"
         portrayal["Color"] = "green"
         portrayal["Layer"] = 0
         portrayal["r"] = 0.5
+    # gives the shapes and colors to the box agents
     elif agent.unique_id >= 5 and agent.unique_id < 25:
         portrayal["Shape"] = "rect"
         portrayal["Color"] = "red"
@@ -20,6 +20,7 @@ def agent_portrayal(agent):
         portrayal["h"] = 0.2
         portrayal["xAlign"] = 0.5
         portrayal["yAlign"] = 0.5
+    # gives the shapes and colors to the stack agents
     else:
         portrayal["Shape"] = "rect"
         portrayal["Color"] = "blue"

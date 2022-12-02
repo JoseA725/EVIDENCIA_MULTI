@@ -1,6 +1,6 @@
 import mesa
-from agent import RobotAgent
 
+# object created to represent boxes
 class BoxAgent(mesa.Agent):
 
     def __init__(self, unique_id, model):
@@ -8,10 +8,6 @@ class BoxAgent(mesa.Agent):
         self.destroy = 0
 
     def step(self):
-        #print("in")
+        # if another agent makes contact destroy
         if(self.destroy > 0):
-            print("FOUND BOX")
             self.model.grid.remove_agent(self)
-
-    def move(self):
-        print()
