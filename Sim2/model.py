@@ -41,4 +41,4 @@ class BoxModel(mesa.Model):
     def step(self):
         self.schedule.step()
         tiempoFinal = time.time()
-        print(tiempoFinal - self.tiempo)
+        print("tiempo: ", tiempoFinal - self.tiempo)
